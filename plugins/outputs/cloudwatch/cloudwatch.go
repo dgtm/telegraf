@@ -73,7 +73,7 @@ func (f *statisticField) buildDatum() []types.MetricDatum {
 		count := f.values[statisticTypeCount]
 
 		datum := types.MetricDatum{
-			MetricName: aws.String(strings.Join([]string{f.metricName, f.fieldName}, "_")),
+			MetricName: aws.String(f.metricName),
 			Dimensions: BuildDimensions(f.tags),
 			Timestamp:  aws.Time(f.timestamp),
 			StatisticValues: &types.StatisticSet{
@@ -97,13 +97,13 @@ func (f *statisticField) buildDatum() []types.MetricDatum {
 
 			switch sType {
 			case statisticTypeMin:
-				datum.MetricName = aws.String(strings.Join([]string{f.metricName, f.fieldName, "min"}, "_"))
+				datum.MetricName = aws.String(strings.Join([]string{f.metricName, "min"}, "_"))
 			case statisticTypeMax:
-				datum.MetricName = aws.String(strings.Join([]string{f.metricName, f.fieldName, "max"}, "_"))
+				datum.MetricName = aws.String(strings.Join([]string{f.metricName, "max"}, "_"))
 			case statisticTypeSum:
-				datum.MetricName = aws.String(strings.Join([]string{f.metricName, f.fieldName, "sum"}, "_"))
+				datum.MetricName = aws.String(strings.Join([]string{f.metricName, "sum"}, "_"))
 			case statisticTypeCount:
-				datum.MetricName = aws.String(strings.Join([]string{f.metricName, f.fieldName, "count"}, "_"))
+				datum.MetricName = aws.String(strings.Join([]string{f.metricName, "count"}, "_"))
 			default:
 				// should not be here
 				continue
@@ -143,7 +143,7 @@ func (f *valueField) addValue(sType statisticType, value float64) {
 func (f *valueField) buildDatum() []types.MetricDatum {
 	return []types.MetricDatum{
 		{
-			MetricName:        aws.String(strings.Join([]string{f.metricName, f.fieldName}, "_")),
+			MetricName:        aws.String(f.metricName),
 			Value:             aws.Float64(f.value),
 			Dimensions:        BuildDimensions(f.tags),
 			Timestamp:         aws.Time(f.timestamp),
